@@ -3,7 +3,7 @@ class APIClient {
     constructor() {
         this.baseURL = window.location.hostname === 'localhost'
             ? 'http://localhost:3001/api'
-            : 'https://chatam-system.onrender.com/api';
+            : 'https://chatam-backend.onrender.com/api';
         this.token = localStorage.getItem('auth_token');
     }
 
