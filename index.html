@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת סידור כניסה לחתמצ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/input.css">
+    <link rel="stylesheet" href="css/results.css">
+</head>
+<body>
+    <div id="app-container"></div>
+
+    <!-- Login Page Template -->
+    <template id="login-page">
+        <div class="login-page">
+            <div class="login-container">
+                <h1>מערכת סידור כניסה לחתמצ</h1>
+                <p class="subtitle">התחברות מנהל</p>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">שם משתמש:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">סיסמה:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">כניסה</button>
+                </form>
+
+                <div id="login-error" class="error-message"></div>
+
+                <div class="info-box">
+                    <p><strong>משתמשים לדוגמה:</strong></p>
+                    <p>admin1 / password1</p>
+                    <p>admin2 / password2</p>
+                    <p>admin3 / password3</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Admin Dashboard Template -->
+    <template id="admin-dashboard">
+        <div class="admin-page">
+            <nav class="navbar">
+                <div class="navbar-content">
+                    <h2>מערכת סידור כניסה לחתמצ</h2>
+                    <div class="navbar-right">
+                        <span id="admin-welcome">ברוך הבא, <strong id="admin-name"></strong></span>
+                        <button id="logout-btn" class="btn btn-secondary">התנתקות</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="admin-container">
+                <!-- Days Management Section -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>ניהול ימי חתמצ</h3>
+                        <button id="add-day-btn" class="btn btn-primary">יום תחילת פעילות</button>
+                    </div>
+                    <div id="days-table-container"></div>
+                </section>
+
+                <!-- Groups Management Section -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>ניהול קבוצות</h3>
+                        <button id="add-group-btn" class="btn btn-primary">+ הוסף קבוצה</button>
+                    </div>
+                    <div id="groups-table-container"></div>
+                </section>
+
+                <!-- Preferences Status Section -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>סטטוס הזנת העדפות</h3>
+                        <span id="preferences-stats" class="stats-badge"></span>
+                    </div>
+                    <div id="preferences-table-container"></div>
+                </section>
+
+                <!-- Actions Section -->
+                <section class="section actions-section">
+                    <h3>פעולות</h3>
+                    <div class="actions-grid">
+                        <button id="calculate-btn" class="btn btn-success">חשב סדר כניסה</button>
+                        <button id="download-btn" class="btn btn-info">הורד כ-Excel</button>
+                        <button id="reset-btn" class="btn btn-danger">אפס הכל</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </template>
+
+    <!-- Group Input Page Template -->
+    <template id="group-input-page">
+        <div class="input-page">
+            <div class="input-container">
+                <h1>הזנת העדפות לסדר כניסה</h1>
+
+                <div class="input-section">
+                    <div class="form-group">
+                        <label for="access-code">קוד גישה:</label>
+                        <input type="text" id="access-code" placeholder="הכנס את קוד הגישה שלך" maxlength="10">
+                        <button id="validate-code-btn" class="btn btn-primary">אימות</button>
+                    </div>
+                </div>
+
+                <div id="preferences-form" class="preferences-form" style="display: none;">
+                    <h2 id="group-name-display"></h2>
+                    <p id="points-info" class="info-text"></p>
+
+                    <form id="input-form">
+                        <table class="preferences-table">
+                            <thead id="preferences-table-header">
+                                <!-- Will be populated dynamically -->
+                            </thead>
+                            <tbody id="preferences-table-body">
+                                <!-- Will be populated dynamically -->
+                            </tbody>
+                        </table>
+
+                        <div class="validation-status">
+                            <p>סך נקודות: <strong id="total-points">0</strong> / <span id="required-points">100</span></p>
+                            <p id="validation-message"></p>
+                        </div>
+
+                        <button type="submit" id="submit-preferences-btn" class="btn btn-success" disabled>שלח העדפות</button>
+                    </form>
+                </div>
+
+                <div id="already-submitted" class="message-box success" style="display: none;">
+                    <p>✓ העדפות הקבוצה שלך כבר הוזנו למערכת</p>
+                    <p class="small-text">לעדכון נתונים, אנא פנה למנהל</p>
+                </div>
+
+                <div id="error-message" class="message-box error" style="display: none;">
+                    <p id="error-text"></p>
+                </div>
+
+                <div id="success-message" class="message-box success" style="display: none;">
+                    <p>✓ ההעדפות נשלחו בהצלחה!</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Results Page Template -->
+    <template id="results-page">
+        <div class="results-page">
+            <nav class="navbar">
+                <div class="navbar-content">
+                    <h2>סדר כניסה לחתמצ - תוצאות</h2>
+                    <div class="navbar-right">
+                        <button id="back-to-admin-btn" class="btn btn-secondary">חזור לדשבורד</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="results-container">
+                <!-- Toggle between views -->
+                <div class="view-toggle">
+                    <button id="view-by-position-btn" class="btn btn-primary active">תצוגת אדמין</button>
+                    <button id="view-by-day-btn" class="btn btn-primary">תצוגה לקבוצה</button>
+                </div>
+
+                <!-- View 1: By Position (Default) -->
+                <div id="view-by-position" class="results-view">
+                    <h3>מיקום בתור בכל יום</h3>
+                    <div id="results-table-container"></div>
+                </div>
+
+                <!-- View 2: By Day -->
+                <div id="view-by-day" class="results-view" style="display: none;">
+                    <h3>מיקום כל קבוצה בתחמצ</h3>
+                    <div id="results-by-day-container"></div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="download-results-btn" class="btn btn-info">הורד</button>
+                    <button id="print-results-btn" class="btn btn-info">הדפס</button>
+                    <button id="recalculate-btn" class="btn btn-warning">חישוב מחדש (הגרלה חדשה)</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal Template -->
+    <template id="modal-template">
+        <div id="modal-backdrop" class="modal-backdrop" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 id="modal-title"></h3>
+                    <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+                </div>
+                <div id="modal-content" class="modal-content"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/groups.js"></script>
+    <script src="js/preferences.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
