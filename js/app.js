@@ -314,8 +314,14 @@ class App {
 
                 // Clear ALL existing days from Database
                 const existingDays = await api.getDays();
+                console.log('Deleting existing days:', existingDays);
                 for (const day of existingDays) {
-                    await api.deleteDay(day.id);
+                    try {
+                        await api.deleteDay(day.id);
+                        console.log('Deleted day:', day.id);
+                    } catch (err) {
+                        console.error('Failed to delete day', day.id, err);
+                    }
                 }
 
                 // Add 4 consecutive days (Sunday-Thursday)
