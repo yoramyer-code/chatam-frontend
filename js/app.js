@@ -25,7 +25,7 @@ class App {
                 break;
             case '/admin':
                 if (auth.requireLogin()) {
-                    this.showAdminDashboard();
+                    this.showAdminDashboard().catch(err => console.error(err));
                 }
                 break;
             case '/input':
@@ -69,7 +69,7 @@ class App {
         });
     }
 
-    showAdminDashboard() {
+    async showAdminDashboard() {
         this.currentPage = 'admin';
         const container = document.getElementById('app-container');
         container.innerHTML = '';
@@ -80,12 +80,12 @@ class App {
         const adminName = auth.getCurrentAdminUsername();
         document.getElementById('admin-name').textContent = adminName;
 
-        this.setupAdminDashboard();
+        await this.setupAdminDashboard();
     }
 
-    setupAdminDashboard() {
+    async setupAdminDashboard() {
         // Display series start date info
-        this.displaySeriesInfo();
+        await this.displaySeriesInfo();
 
         // Groups table
         ui.renderGroupsTable('groups-table-container');
@@ -187,55 +187,61 @@ class App {
         });
     }
 
-    displaySeriesInfo() {
-        const startDate = storage.getSeriesStartDate();
+    async displaySeriesInfo() {
         const daysContainer = document.getElementById('days-table-container');
 
-        console.log('displaySeriesInfo - startDate:', startDate);
+        try {
+            const days = await api.getDays();
+            console.log('displaySeriesInfo - days from API:', days);
 
-        if (!startDate) {
-            daysContainer.innerHTML = '<p class="text-center">לא הוגדר תאריך התחלה לסדרה</p>';
-            return;
-        }
+            if (!days || days.length === 0) {
+                daysContainer.innerHTML = '<p class="text-center">לא הוגדרו ימי חתמצ</p>';
+                return;
+            }
 
-        const days = storage.getWorkingDays(startDate);
-        console.log('displaySeriesInfo - days:', days);
-        const dayNames = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+            const dayNames = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
 
-        const table = document.createElement('table');
-        table.innerHTML = `
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>תאריך</th>
-                    <th>יום בשבוע</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        `;
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>תאריך</th>
+                        <th>יום בשבוע</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
 
-        const tbody = table.querySelector('tbody');
+            const tbody = table.querySelector('tbody');
 
-        days.forEach((day, index) => {
-            const date = new Date(day.date + 'T00:00:00');
-            const dayName = dayNames[date.getDay()];
-            const formattedDate = date.toLocaleDateString('he-IL', {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric'
+            // Sort days by date
+            const sortedDays = [...days].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            sortedDays.forEach((day, index) => {
+                const date = new Date(day.date + 'T00:00:00');
+                const dayName = dayNames[date.getDay()];
+                const formattedDate = date.toLocaleDateString('he-IL', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric'
+                });
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${formattedDate}</td>
+                    <td>יום ${dayName}</td>
+                `;
+                tbody.appendChild(row);
             });
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${formattedDate}</td>
-                <td>יום ${dayName}</td>
-            `;
-            tbody.appendChild(row);
-        });
-
-        daysContainer.innerHTML = '';
-        daysContainer.appendChild(table);
+            daysContainer.innerHTML = '';
+            daysContainer.appendChild(table);
+        } catch (error) {
+            console.error('Error loading days:', error);
+            daysContainer.innerHTML = '<p class="text-center error-message">שגיאה בטעינת הימים</p>';
+        }
     }
 
     showSetSeriesStartDateModal() {
@@ -324,7 +330,7 @@ class App {
 
                 // Force reload the dashboard
                 this.currentPage = null;
-                this.showAdminDashboard();
+                await this.showAdminDashboard();
             } catch (error) {
                 console.error('Error setting days:', error);
                 ui.showAlert('שגיאה בהגדרת הימים', 'error');
@@ -820,9 +826,9 @@ class App {
         }
     }
 
-    refreshAdminDashboard() {
+    async refreshAdminDashboard() {
         if (this.currentPage === 'admin') {
-            this.showAdminDashboard();
+            await this.showAdminDashboard();
         }
     }
 
