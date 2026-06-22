@@ -219,7 +219,12 @@ class App {
             const sortedDays = [...days].sort((a, b) => new Date(a.date) - new Date(b.date));
 
             sortedDays.forEach((day, index) => {
-                const date = new Date(day.date + 'T00:00:00');
+                // Parse date - handle both formats: "2026-07-05" and "2026-07-05T00:00:00.000Z"
+                let dateStr = day.date;
+                if (dateStr.includes('T')) {
+                    dateStr = dateStr.split('T')[0]; // Extract just the date part
+                }
+                const date = new Date(dateStr + 'T00:00:00');
                 const dayName = dayNames[date.getDay()];
                 const formattedDate = date.toLocaleDateString('he-IL', {
                     year: 'numeric',
@@ -468,7 +473,11 @@ class App {
         // Build header
         let headerHTML = '<tr>';
         for (const day of days) {
-            const date = new Date(day.date + 'T00:00:00');
+            let dateStr = day.date;
+            if (dateStr.includes('T')) {
+                dateStr = dateStr.split('T')[0];
+            }
+            const date = new Date(dateStr + 'T00:00:00');
             const dayName = dayNames[date.getDay()];
             const formattedDate = date.toLocaleDateString('he-IL', {
                 day: 'numeric',
@@ -682,7 +691,11 @@ class App {
         const dayNames = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
 
         for (const day of days) {
-            const date = new Date(day.date + 'T00:00:00');
+            let dateStr = day.date;
+            if (dateStr.includes('T')) {
+                dateStr = dateStr.split('T')[0];
+            }
+            const date = new Date(dateStr + 'T00:00:00');
             const dayName = dayNames[date.getDay()];
             const formattedDate = date.toLocaleDateString('he-IL', {
                 year: 'numeric',
