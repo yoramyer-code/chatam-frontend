@@ -264,9 +264,17 @@ class App {
         form.innerHTML = `
             ${warningHTML}
             <div class="form-group">
-                <label for="series-start-date">בחר תאריך התחלה של הסדרה:</label>
+                <label for="series-start-date"><strong>בחר תאריך התחלה של הסדרה:</strong></label>
+                <p class="info-text" style="font-size: 12px; margin-top: 5px;">זה יהיה יום ראשון וגם ימים שני, שלישי, רביעי (עוקבים)</p>
                 <input type="date" id="series-start-date" required>
             </div>
+
+            <div class="form-group">
+                <label for="day5-date"><strong>בחר תאריך ליום חמישי נוסף:</strong></label>
+                <p class="info-text" style="font-size: 12px; margin-top: 5px;">יום זה יכול להיות בכל תאריך (לא חייב להיות עוקב)</p>
+                <input type="date" id="day5-date" required>
+            </div>
+
             <div style="text-align: center; margin-top: 1.5rem;">
                 <button type="submit" class="btn btn-success">קבע</button>
                 <button type="button" class="btn btn-secondary cancel-btn">ביטול</button>
@@ -275,29 +283,52 @@ class App {
 
         const closeModal = ui.showModal('יום תחילת פעילות', form);
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const date = document.getElementById('series-start-date').value;
+            const startDate = document.getElementById('series-start-date').value;
+            const day5Date = document.getElementById('day5-date').value;
 
-            if (hasExistingDate && currentDate !== date) {
+            if (hasExistingDate && currentDate !== startDate) {
                 // Clear preferences if date changed
                 storage.savePreferences([]);
             }
 
-            // Save the new date
-            storage.setSeriesStartDate(date);
+            // Save start date
+            storage.setSeriesStartDate(startDate);
 
-            // Verify it was saved
-            const savedDate = storage.getSeriesStartDate();
-            console.log('Saved date:', savedDate, 'New date:', date);
+            // Add the 4 auto-calculated days
+            try {
+                const baseDate = new Date(startDate);
 
-            closeModal();
-            ui.showAlert('תאריך התחלה הוגדר בהצלחה', 'success');
+                // Clear existing days
+                const existingDays = storage.getWorkingDays(startDate);
+                for (const day of existingDays) {
+                    await api.deleteDay(day.id);
+                }
 
-            // Force reload the dashboard
-            this.currentPage = null;
-            this.showAdminDashboard();
+                // Add 4 consecutive days
+                for (let i = 0; i < 4; i++) {
+                    const currentDate = new Date(baseDate);
+                    currentDate.setDate(currentDate.getDate() + i);
+
+                    const formattedDate = currentDate.toISOString().split('T')[0];
+                    await api.addDay(formattedDate);
+                }
+
+                // Add day 5 (manual date)
+                await api.addDay(day5Date);
+
+                closeModal();
+                ui.showAlert('ימי החתמצ הוגדרו בהצלחה', 'success');
+
+                // Force reload the dashboard
+                this.currentPage = null;
+                this.showAdminDashboard();
+            } catch (error) {
+                console.error('Error setting days:', error);
+                ui.showAlert('שגיאה בהגדרת הימים', 'error');
+            }
         });
 
         form.querySelector('.cancel-btn').addEventListener('click', closeModal);

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עץ ארגוני - רותם 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f8f8;
+            padding: 40px 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        svg {
+            display: block;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            height: auto;
+        }
+
+        .box {
+            fill: white;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .box-ceo {
+            fill: #e3f2fd;
+            stroke: #1976d2;
+            stroke-width: 2.5;
+        }
+
+        .box-vp {
+            fill: #f3e5f5;
+            stroke: #7b1fa2;
+            stroke-width: 2;
+        }
+
+        .box-manager {
+            fill: #fce4ec;
+            stroke: #c2185b;
+            stroke-width: 2;
+        }
+
+        .box-staff {
+            fill: #fff3e0;
+            stroke: #f57c00;
+            stroke-width: 2;
+        }
+
+        .text-main {
+            font-size: 13px;
+            font-weight: bold;
+            fill: #1a1a1a;
+        }
+
+        .text-title {
+            font-size: 11px;
+            fill: #444;
+        }
+
+        .line {
+            stroke: #333;
+            stroke-width: 2;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>עץ ארגוני</h1>
+        <p class="subtitle">רותם 2025</p>
+
+        <svg viewBox="0 0 1400 1200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Define connectors -->
+            <!-- CEO to VPs -->
+            <line x1="700" y1="100" x2="700" y2="140" class="line"/>
+            <line x1="300" y1="140" x2="1100" y2="140" class="line"/>
+            <line x1="300" y1="140" x2="300" y2="180" class="line"/>
+            <line x1="1100" y1="140" x2="1100" y2="180" class="line"/>
+
+            <!-- CEO Box -->
+            <rect x="600" y="20" width="200" height="80" rx="6" class="box box-ceo"/>
+            <text x="700" y="50" text-anchor="middle" class="text-main">ליאור פדלון</text>
+            <text x="700" y="68" text-anchor="middle" class="text-title">מנהל אתר</text>
+
+            <!-- VP Level -->
+            <!-- VP Left (Lior Biton) -->
+            <rect x="200" y="180" width="200" height="80" rx="6" class="box box-vp"/>
+            <text x="300" y="210" text-anchor="middle" class="text-main">ליאור ביטון</text>
+            <text x="300" y="228" text-anchor="middle" class="text-title">סמנ"ל דשנים</text>
+
+            <!-- VP Right (Moshe Azoulay) -->
+            <rect x="1000" y="180" width="200" height="80" rx="6" class="box box-vp"/>
+            <text x="1100" y="210" text-anchor="middle" class="text-main">משה אזולאי</text>
+            <text x="1100" y="228" text-anchor="middle" class="text-title">סמנכ"ל חומצות</text>
+
+            <!-- Moshe's Department Connectors -->
+            <line x1="1100" y1="260" x2="1100" y2="300" class="line"/>
+            <line x1="850" y1="300" x2="1350" y2="300" class="line"/>
+
+            <!-- Zones 10-11 -->
+            <line x1="850" y1="300" x2="850" y2="340" class="line"/>
+            <rect x="750" y="340" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="850" y="370" text-anchor="middle" class="text-main">דרור פרץ</text>
+            <text x="850" y="388" text-anchor="middle" class="text-title">מנהל אזורים 10-11</text>
+
+            <!-- Hypochlorous Acid -->
+            <line x1="1100" y1="300" x2="1100" y2="340" class="line"/>
+            <rect x="1000" y="340" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="1100" y="370" text-anchor="middle" class="text-main">גיא זייפרט</text>
+            <text x="1100" y="388" text-anchor="middle" class="text-title">מנהל חומצה היפוכלורית</text>
+
+            <!-- White Acid -->
+            <line x1="1350" y1="300" x2="1350" y2="340" class="line"/>
+            <rect x="1250" y="340" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="1350" y="370" text-anchor="middle" class="text-main">אבי בטש</text>
+            <text x="1350" y="388" text-anchor="middle" class="text-title">מנהל חומצה לבנה</text>
+
+            <!-- Staff under managers -->
+            <!-- Under Dror Peretz (Zones 10-11) -->
+            <line x1="850" y1="420" x2="850" y2="460" class="line"/>
+            <rect x="750" y="460" width="200" height="80" rx="6" class="box box-staff"/>
+            <text x="850" y="490" text-anchor="middle" class="text-main">חנן</text>
+            <text x="850" y="508" text-anchor="middle" class="text-title">מנהל החזקה</text>
+
+            <!-- Under Gia Zeifert (Hypochlorous) -->
+            <line x1="1100" y1="420" x2="1100" y2="460" class="line"/>
+            <rect x="1000" y="460" width="200" height="80" rx="6" class="box box-staff"/>
+            <text x="1100" y="490" text-anchor="middle" class="text-main">נדב לוי</text>
+            <text x="1100" y="508" text-anchor="middle" class="text-title">מנהל החזקה</text>
+
+            <!-- Under Avi Batash (White Acid) -->
+            <line x1="1350" y1="420" x2="1350" y2="460" class="line"/>
+            <rect x="1250" y="460" width="200" height="80" rx="6" class="box box-staff"/>
+            <text x="1350" y="490" text-anchor="middle" class="text-main">אמג'ד</text>
+            <text x="1350" y="508" text-anchor="middle" class="text-title">מנהל</text>
+
+            <!-- Additional Managers Level -->
+            <!-- Operations and Maintenance Teams -->
+            <line x1="300" y1="260" x2="300" y2="600" class="line"/>
+
+            <!-- Maintenance Division -->
+            <line x1="50" y1="600" x2="550" y2="600" class="line"/>
+
+            <line x1="50" y1="600" x2="50" y2="640" class="line"/>
+            <rect x="-50" y="640" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="50" y="670" text-anchor="middle" class="text-main">קובי</text>
+            <text x="50" y="688" text-anchor="middle" class="text-title">מנהל החזקה אזור 31</text>
+
+            <line x1="300" y1="600" x2="300" y2="640" class="line"/>
+            <rect x="200" y="640" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="300" y="670" text-anchor="middle" class="text-main">אייל</text>
+            <text x="300" y="688" text-anchor="middle" class="text-title">מנהל החזקה אזור 30</text>
+
+            <line x1="550" y1="600" x2="550" y2="640" class="line"/>
+            <rect x="450" y="640" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="550" y="670" text-anchor="middle" class="text-main">מורסי</text>
+            <text x="550" y="688" text-anchor="middle" class="text-title">מנהל אזורים 30-31</text>
+
+            <!-- Operations Division -->
+            <line x1="700" y1="600" x2="700" y2="640" class="line"/>
+            <rect x="600" y="640" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="700" y="670" text-anchor="middle" class="text-main">יבגני</text>
+            <text x="700" y="688" text-anchor="middle" class="text-title">מנהל תפעול אזור 31</text>
+
+            <line x1="950" y1="600" x2="950" y2="640" class="line"/>
+            <rect x="850" y="640" width="200" height="80" rx="6" class="box box-manager"/>
+            <text x="950" y="670" text-anchor="middle" class="text-main">מעין</text>
+            <text x="950" y="688" text-anchor="middle" class="text-title">מנהל תפעול אזור 30</text>
+
+            <line x1="625" y1="600" x2="625" y2="720" class="line"/>
+            <line x1="625" y1="720" x2="950" y2="720" class="line"/>
+
+            <!-- Legend -->
+            <text x="50" y="900" font-size="14" font-weight="bold" fill="#333">מקרא:</text>
+
+            <rect x="50" y="920" width="30" height="30" class="box box-ceo"/>
+            <text x="100" y="940" font-size="12" fill="#333">מנהל אתר</text>
+
+            <rect x="250" y="920" width="30" height="30" class="box box-vp"/>
+            <text x="300" y="940" font-size="12" fill="#333">סמנכ"ל / VP</text>
+
+            <rect x="480" y="920" width="30" height="30" class="box box-manager"/>
+            <text x="530" y="940" font-size="12" fill="#333">מנהל</text>
+
+            <rect x="650" y="920" width="30" height="30" class="box box-staff"/>
+            <text x="700" y="940" font-size="12" fill="#333">מנהל בכיר / צוות</text>
+        </svg>
+    </div>
+</body>
+</html>
