@@ -312,13 +312,13 @@ class App {
             try {
                 const baseDate = new Date(startDate);
 
-                // Clear existing days
-                const existingDays = storage.getWorkingDays(startDate);
+                // Clear ALL existing days from Database
+                const existingDays = await api.getDays();
                 for (const day of existingDays) {
                     await api.deleteDay(day.id);
                 }
 
-                // Add 4 consecutive days
+                // Add 4 consecutive days (Sunday-Thursday)
                 for (let i = 0; i < 4; i++) {
                     const currentDate = new Date(baseDate);
                     currentDate.setDate(currentDate.getDate() + i);
