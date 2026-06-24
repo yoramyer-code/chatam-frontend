@@ -276,12 +276,18 @@ class App {
             ${warningHTML}
             <div class="form-group">
                 <label for="series-start-date"><strong>בחר תאריך התחלה של הסדרה:</strong></label>
-                <p class="info-text" style="font-size: 12px; margin-top: 5px;">זה יהיה יום ראשון וגם ימים שני, שלישי, רביעי (עוקבים)</p>
+                <p class="info-text" style="font-size: 12px; margin-top: 5px;">זה יהיה יום ראשון וגם ימים שני, שלישי (עוקבים)</p>
                 <input type="date" id="series-start-date" required>
             </div>
 
             <div class="form-group">
-                <label for="day5-date"><strong>בחר תאריך ליום חמישי נוסף:</strong></label>
+                <label for="day4-date"><strong>בחר תאריך ליום רביעי (בחירה חופשית):</strong></label>
+                <p class="info-text" style="font-size: 12px; margin-top: 5px;">יום זה יכול להיות בכל תאריך (לא חייב להיות עוקב)</p>
+                <input type="date" id="day4-date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="day5-date"><strong>בחר תאריך ליום חמישי (בחירה חופשית):</strong></label>
                 <p class="info-text" style="font-size: 12px; margin-top: 5px;">יום זה יכול להיות בכל תאריך (לא חייב להיות עוקב)</p>
                 <input type="date" id="day5-date" required>
             </div>
@@ -298,6 +304,7 @@ class App {
             e.preventDefault();
 
             const startDate = document.getElementById('series-start-date').value;
+            const day4Date = document.getElementById('day4-date').value;
             const day5Date = document.getElementById('day5-date').value;
 
             if (hasExistingDate && currentDate !== startDate) {
@@ -308,7 +315,7 @@ class App {
             // Save start date
             storage.setSeriesStartDate(startDate);
 
-            // Add the 4 auto-calculated days
+            // Add the 3 auto-calculated days + 2 manual days
             try {
                 const baseDate = new Date(startDate);
 
@@ -324,14 +331,17 @@ class App {
                     }
                 }
 
-                // Add 4 consecutive days (Sunday-Thursday)
-                for (let i = 0; i < 4; i++) {
+                // Add 3 consecutive days (Sunday-Tuesday)
+                for (let i = 0; i < 3; i++) {
                     const currentDate = new Date(baseDate);
                     currentDate.setDate(currentDate.getDate() + i);
 
                     const formattedDate = currentDate.toISOString().split('T')[0];
                     await api.addDay(formattedDate);
                 }
+
+                // Add day 4 (manual date)
+                await api.addDay(day4Date);
 
                 // Add day 5 (manual date)
                 await api.addDay(day5Date);
